@@ -1,18 +1,21 @@
 from fastapi import FastAPI, HTTPException
 from typing import List
+from contextlib import asynccontextmanager
 from models import Item
 from seed_data import load_seed_data
-
-app = FastAPI(title="API REST Test", redoc_url=None)
 
 # Base de datos en memoria
 items_db: List[Item] = []
 
-@app.on_event("startup")
-def startup_event():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup
     global items_db
     if not items_db:
         items_db = load_seed_data()
+    yield
+
+app = FastAPI(title="API REST Test", redoc_url=None, lifespan=lifespan)
 
 # Endpoints CRUD básicos
 
