@@ -3,7 +3,7 @@ from typing import List
 from models import Item
 from seed_data import load_seed_data
 
-app = FastAPI(title="API REST Test")
+app = FastAPI(title="API REST Test", redoc_url=None)
 
 # Base de datos en memoria
 items_db: List[Item] = []
